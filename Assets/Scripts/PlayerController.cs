@@ -3,26 +3,46 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private float speed = 0.1f;
+    private float speed = 0.15f;
     private float fireRate = 0.3f;
     private bool shootAllow = true;
+    public int lives;
+    public bool isAlive;
     public GameObject bullet;
     private Vector2 initialPosition = new Vector2(-7, 0);
+    public AudioClip bulletSound;
+    private AudioSource playerAudio;
+    private GameManager gameManagerScript;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        gameManagerScript = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        playerAudio = GetComponent<AudioSource>();
+        isAlive = true;
+        lives = 6;
         SetInitialPosition();
     }
 
     // Update is called once per frame
     void Update()
     {
-        MovementControl();
-        OutOfBoundCheck();
-        if (Input.GetKeyDown(KeyCode.Space) && shootAllow)
+        if (!gameManagerScript.inOptionMenu)
         {
-            StartCoroutine(ShootingBullet());
+            if (isAlive)
+            {
+                MovementControl();
+                OutOfBoundCheck();
+                if (Input.GetKeyDown(KeyCode.Space) && shootAllow)
+                {
+                    playerAudio.PlayOneShot(bulletSound, 3.0f);
+                    StartCoroutine(ShootingBullet());
+                } 
+            }   
+            if (lives == 0)
+            {
+                isAlive = false;
+            }
         }
     }
 

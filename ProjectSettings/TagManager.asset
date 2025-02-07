@@ -4,12 +4,10 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Speed
-  - Power
-  - Fire Rate
   - Bullet
   - Balloon
-  - Receiver
+  - Bomb
+  - Buff
   layers:
   - Default
   - TransparentFX
